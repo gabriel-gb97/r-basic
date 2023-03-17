@@ -1,0 +1,169 @@
+---
+title: "Graficos"
+author: "Gabriel"
+date: "7/3/2022"
+output:
+  html_document:
+    df_print: paged
+---
+## Graficos con la funcion `plot`
+
+```{r primer_plot, fig.cap="Gráfico básico explicando uso del plot", fig.showtext=FALSE}
+x = c(2,6,4,9,-1)
+y = c(1,8,4,-2,4)
+
+plot(x,y)
+```
+
+Si no incroporamos vector `y`, `R` nos va a tomar el parametro `x` como si fuese el vector de datos `y`
+
+```{r}
+plot(2^(1:6))
+```
+
+Si queremos representar una funcion $f(x)$
+
+```{r}
+f = function(x){sqrt(x)}
+plot(f)
+```
+
+## Parametros
+
+```{r, echo=FALSE, fig.align='center'}
+n = 1:20
+fibo = (1/sqrt(5))*((1+sqrt(5))/2)^n - (1/sqrt(5))*((1-sqrt(5))/2)^n
+fibo
+par(mfrow = c(1,2))
+plot(fibo, xlab="n", ylab = expression(F[n]),
+     main = "Sucesion de Fibonacci", pch = 21, cex = 2, #Con el pch21, en col se elige color de borde, bg relleno
+     col = "powderblue", bg = "orchid")
+plot(fibo, xlab="n", ylab = expression(F[n]),
+     main = "Sucesion de Fibonacci", pch = 21, cex = 2, 
+     col = "powderblue", bg = "orchid", log = "y")
+par(mfrow = c(1,1))
+```
+
+
+### Màs parametros
+
+- **type**: para elegir tipo de grafico
+  - **p**: puntos
+  - **l**: linea, ignora puntos
+  - **b**: une considerando puntos
+  - **o**: une, atravesando puntos
+  - **h**: histograma de lineas
+  - **s**: histograma de escalones
+  
+- Tipo de linea **lty**
+  - "solid"
+  - "dashed" discontinua
+  - "dotted" de puntos
+  - "dotdashed" puntos y rayas
+  -lwd grosor
+  -xlim rango eje x
+  -ylim rango eje y
+  -xaxp marcas en eje x
+  -yaxp marcas en eje y
+  
+#### Ejemplos
+
+```{r, fig.align='center'}
+plot(n, fibo, pch = 21, bg = "yellow", cex = 1.2,
+     main = "Fibonacci",
+     type = "o", lty = "dotted", lwd = 2, 
+     xlim = c(1,10),
+     ylim = c(1,100),
+     xaxp = c(1,10,3), yaxp = c(0,100,10))
+```
+
+### Añadir elementos al gráfico
+
+Funcion **points(x,y)** agrega puntos al grafico
+Funcion $abline(a,b)$ añade una recta al grafico
+
+```{r}
+f = function(x){
+  x^2 -2*x +sqrt(abs(x))
+}
+plot(f, xlim = c(-3,3))
+points(0,0, pch = 19)
+points(-3:3,(-3:3)^2, col = "blue")
+abline(2,3, lty = "dashed", col = "red")
+abline(v = 2, lty = "dotted", col = "green")
+abline(h = 5, lty = "dotdash", col ="gray")
+```
+
+```{r}
+f = function(x){x^2}
+plot(f, xlim = c(-3,3), col="red", lwd = 2,
+     ylab = expression(y^2), xlab = "x")
+abline(h = 0:9, v = -3:3, lty = "dotted", col = "grey")
+```
+
+```{r}
+plot(tan, xlim = c(-pi, pi), ylim = c(-5,5))
+abline(v = c(-pi/2, pi/2), col = "red")
+```
+
+### Añadiendo texto al gráfico
+Funcion **text** añade texto, indicando corredenada y como se escribe el texto
+
+```{r}
+plot(0,0)
+text(0,0, labels = "debajo", pos = 1)
+text(0,0, labels = "izquierda", pos = 2)
+text(0,0, labels = "arriba", pos = 3)
+text(0,0, labels = "derecha", pos = 4)
+points(0,1)
+text(0,1, labels = "centro")
+```
+
+
+```{r}
+f = function(x){x^2}
+plot(f, xlim = c(-3,3), ylim = c(-10,10))
+lines(-3:3, f(-3:3), col = "red")
+points(-3:3, f(-3:3), pch = 19)
+curve(x^3, lty = "dashed", col = "blue", add = TRUE)
+curve(x^4, lty = "dotted", col = "orangered", add = TRUE)
+```
+
+### Añadir leyendas
+
+Funcion **legend**, se le da la posicion y la leyenda en si
+
+```{r}
+f = function(x){x^2}
+plot(f, xlim = c(-3,3), ylim = c(-10,10))
+lines(-3:3, f(-3:3), col = "red")
+points(-3:3, f(-3:3), pch = 19)
+curve(x^3, lty = "dashed", col = "blue", add = TRUE)
+curve(x^4, lty = "dotted", col = "orangered", add = TRUE)
+legend("bottomright", 
+       legend = c(expression(x^2), expression(x^3), expression(x^4)), 
+       col = c("red", "blue", "orangered"), 
+       lwd = 2, 
+       lty = c("solid", "dashed", "dotted")
+       )
+```
+
+### Añadir más elementos
+
+- segents: segmentos
+- arrows: felchas
+- symbols: sibmolos
+- polygons: poligonos
+
+```{r, fig.align='center'}
+x = c(5*(1:10))
+plot(x, c(exp(-x)+(-1)^x*x/2*sin(x)^2), xlab = "", ylab = "",
+     main = "Grafico con varios elementos")
+segments(10,0,40,0, col = "red", lwd = 4)
+arrows(10,0,40,-10, col = "blue", length = 0.5, angle = 5, code = 3)
+symbols(40,0, stars = cbind(1,.5,1,.5,1,.5,1,.5,1,.5), add = TRUE, lwd = 3, inches = 0.5)
+symbols(40,0, stars = cbind(1,.5,1,.5,1,.5,1,.5,1,.5), add = TRUE, lwd = 3)
+polygon(c(20,30,40), c(10,-10,10), col = "gold", density = 3, angle = 90, lty = 4, lwd = 5)
+
+```
+

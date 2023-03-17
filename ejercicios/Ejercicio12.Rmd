@@ -1,0 +1,42 @@
+---
+title: "Ejercicio12"
+author: "Gabriel"
+date: '2022-04-05'
+output: html_document
+---
+
+Carga DF
+```{r}
+data = read.table("../data/grades.txt", sep = " ", stringsAsFactors = TRUE, header = TRUE)
+head(data)
+str(data)
+```
+
+Pregunta 1 Global
+```{r}
+round(mean(data$nota), 2)
+round(median(data$nota), 2)
+mod = function(c){
+round(as.numeric(names(which(table(c) == max(table(c))))), 2)
+}
+mod(data$nota)
+```
+
+Pregunta 1 por estudio
+```{r}
+by(data$nota, data$estudio, FUN = summary)
+```
+
+Pregutnas 2 Variacion por estudio
+```{r}
+aggregate(nota ~ estudio, data = data, FUN = function(c){round(sd(c, na.rm = T), 2)})
+```
+
+Pregunta 4 Grafico
+```{r}
+boxplot(nota ~ estudio, data = data, col='lightblue', main = "Diagrama de caja de notas del examen",
+        xlab = 'Estudio', ylab = 'Notas')
+points(aggregate(nota ~ estudio, data = data, FUN = function(c){round(mean(c, na.rm = T),2)}), col = 'yellow',
+       pch = 15)
+```
+

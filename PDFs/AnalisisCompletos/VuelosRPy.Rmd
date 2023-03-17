@@ -1,0 +1,34 @@
+---
+title: "VuelosRPy"
+author: "Gabriel"
+date: '2022-04-28'
+output: html_document
+---
+
+# Vuelos de aereopuerto en NY
+
+```{r cache=TRUE}
+library(reticulate)
+data = nycflights13::flights
+head(data)
+nrow(data)
+summary(data)
+```
+
+```{python}
+import pandas as pd
+pydata = r.data
+pydata = pydata[pydata['dest']=='ORD']
+pydata = pydata[['carrier', 'dep_delay', 'arr_delay', 'origin']]
+pydata = pydata[pydata['arr_delay']<(6*60)]
+pydata = pydata.dropna()
+print(pydata.head())
+print(pydata.shape)
+```
+
+```{r}
+library(reticulate)
+summary(py$pydata)
+boxplot(arr_delay~origin, data = py$pydata, main = "Retraso de los vuelos para Orlando")
+```
+

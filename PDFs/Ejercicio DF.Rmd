@@ -1,0 +1,55 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r}
+df = read.csv("http://winterolympicsmedals.com/medals.csv", header = TRUE)
+head(df)
+str(df)
+nro_deportistas = nrow(df)
+nro_deportistas
+df$Medal = as.factor(df$Medal)
+nrow(df[df$Medal == "Gold", ])
+nrow(df[df$Medal == "Silver", ])
+nrow(df[df$Medal == "Bronze", ])
+df$City = as.factor(df$City)
+length(levels(df$City))
+
+df$Event.gender = as.factor(df$Event.gender)
+str(df)
+dim(df[df$Event.gender == "M",])[1] # 1386 hombres
+dim(df[df$Event.gender == "W",])[1] # 802 mujeres
+dim(df[df$Event.gender == "X",])[1] # 123 no define
+
+#Ejercicio 5
+yrs = unique(df$Year)
+
+ath_per_yrs = function(x){
+  sum(df$Year == x)
+}
+
+ath = sapply(yrs, ath_per_yrs)
+
+i = which.max(ath)
+yrs[i]
+
+#Ejercicio 6
+
+medals1960_1996 = df[df$Year >= 1960 & df$Year <= 1966 & df$Medal == "Gold" , ]
+
+medals1960_1996$NOC = as.factor(medals1960_1996$NOC)
+cntry = levels(medals1960_1996$NOC)
+
+
+vctry_cntry = function(x){
+  sum(medals1960_1996$NOC == x)
+}
+
+victories = sapply(cntry, vctry_cntry)
+which.max(victories)
+
+```
+

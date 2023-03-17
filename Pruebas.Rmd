@@ -1,0 +1,68 @@
+---
+title: "Cruso R"
+author: "Gabriel"
+date: "24/2/2022"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+### Primeras pruebas de LATEX
+
+$$\int_0^1 x\ dx = \frac{x^2}{2}]_0^1 =\frac{1}{2}$$
+Matrices
+$$\begin{matrix} a_{11} & a_{12} & a_{13}\\ a_{21} & a_{22} & a_{23} \end{matrix}$$
+$$\left(\begin{matrix} a_{11} & a_{12} & a_{13}\\ a_{21} & a_{22} & a_{23} \end{matrix}\right)$$
+Ecuaciones
+$$\left.\begin{array}{l} ax+by=c\\ ex-fy=g \end{array}\right\}$$
+Código
+
+```{r Miprimerachunk, echo=TRUE, eval=TRUE, comment=NA}
+sqrt(2) - exp(-2)
+```
+
+```{r, message=FALSE,comment=NA}
+library(magic)
+magic(6)
+```
+
+Cuando queremos ahcer la raiz cuadrada de dos
+
+- En  $\sqrt{2}$
+- En `R` haciendo `r sqrt(2)`
+- La frase completa: $\sqrt{2}=$ `r sqrt(2)`
+
+```{r prueba, results='hide', echo=TRUE}
+ntoas = c(3,5,7,7,9,10)
+media = mean(ntoas)
+n = length(ntoas)
+desv.tip = sd(ntoas)
+
+```
+
+
+Este año he hecho $n=$ `r n` examenes, con una media $\overline{x}=$ `r round(media, 2)` y una desviacion tipica de $s=$ `r round(desv.tip, 2)`
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

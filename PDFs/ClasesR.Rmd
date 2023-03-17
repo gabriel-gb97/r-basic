@@ -1,0 +1,121 @@
+---
+title: "FuncionCut"
+author: "Gabriel"
+date: '2022-04-11'
+output: html_document
+---
+
+# Funcion cut
+
+```{r}
+iris_df = iris
+iris$Petal.Length -> petals
+iris_df$div1 = cut(petals, breaks = 5, right = F)
+iris_df$div2 = cut(petals, breaks = ceiling(sqrt(length(petals))), right = F)
+iris_df$div3 = cut(petals, breaks = c(1,2,3,4,5,6,7), right = F)
+iris_df$div4 = cut(petals, breaks = 5, right = F, labels = F)
+iris_df$div5 = cut(petals, breaks = 5, right = F, labels = c("Peq", "Norm", "Gran", "XGran", "Gigant"))
+#iris_df
+```
+
+## Calculos de frecuencias de las clases generadas
+
+### Script 1
+
+Funciones para tabla de frecuencia sin intervalos previos
+```{r}
+TablaFrecs = function(x,k,A,p){ 
+  L = min(x)-p/2+A*(0:k)
+  x_cut = cut(x, breaks = L, right=FALSE)
+  intervals = levels(x_cut)
+  mc = (L[1]+L[2])/2+A*(0:(k-1))
+  Fr.abs = as.vector(table(x_cut)) 
+  Fr.rel = round(Fr.abs/length(x),4) 
+  Fr.cum.abs = cumsum(Fr.abs) 
+  Fr.cum.rel = cumsum(Fr.rel)
+  tabla = data.frame(intervals, mc, Fr.abs, Fr.cum.abs, Fr.rel, Fr.cum.rel)
+  tabla
+}
+```
+
+### Script 2
+
+Funciones para tabla de frecuenca con intervalos previos
+```{r}
+TablaFrecs.L = function(x,L,V){
+  x_cut = cut(x, breaks=L, right=FALSE, include.lowest=V)
+  intervals = levels(x_cut)
+  mc = (L[1:(length(L)-1)]+L[2:length(L)])/2
+  Fr.abs = as.vector(table(x_cut)) 
+  Fr.rel = round(Fr.abs/length(x),4)
+  Fr.cum.abs = cumsum(Fr.abs)
+  Fr.cum.rel = cumsum(Fr.rel)
+  tabla = data.frame(intervals, mc, Fr.abs, Fr.cum.abs, Fr.rel, Fr.cum.rel)
+  tabla
+}
+```
+
+### Pruebas
+
+Pruebas de script #1 Tabla de frecuencia longitud de petalos Iris
+```{r}
+
+TablaFrecs(petals, k = 6, A = 1, p = 0.1)
+```
+
+Prueba de script #2 Tabla de frecuenca longitud petalos Iris, con intervalos dados
+```{r}
+TablaFrecs.L(petals, L = 1:7, V = FALSE)
+
+```
+
+### Ejercicos notas de alumnos
+
+```{r}
+set.seed(4)
+notas = sample(0:10, 100, replace = TRUE)
+set.seed(NULL)
+
+#Definimos los extremos de los intervalos
+L = c(0, 5, 7, 9, 10)
+
+#Aplicamos funcion cut
+notas_cut = cut(notas, breaks = L, right = F, include.lowest = T)
+notas_cut
+
+#Definieindo marcas de clase
+MC = (L[1:length(L)-1]+L[2:length(L)])/2
+MC
+#Ahora volvemos a redefinir el vector cut, con las etiquetas de marcas de clase
+notas_cut2 = cut(notas, breaks = L, labels = c(2.5, 6, 8, 9.5), right = F, include.lowest = T)
+notas_cut2
+
+#Eligiendo etiquetas con texto
+notas_cut3 = cut(notas, breaks = L, labels = c("Susp", "Aprob", "Not", "Exc"), right = F, include.lowest = T)
+notas_cut3
+
+#Aplicando tablas de frecuencia
+table(notas_cut3)
+prop.table(table(notas_cut3))
+cumsum(table(notas_cut3))
+cumsum(prop.table(table(notas_cut3)))
+
+#Como obtener todo lo anterior aplicando la funcion hist()
+notasHist = hist(notas, breaks = L, rigth = F, include.lowest = T, plot = F)
+FAbs = notasHist$count
+FRel = prop.table(FAbs)
+FAbsCum = cumsum(FAbs)
+FRelCum = cumsum(FRel)
+intervalos = c("[0,5)", "[5,7)", "[7,9)","[9,10]")
+calificacion = c("Susp", "Aprob", "Not", "Exc")
+marcas = notasHist$mids
+notas_df = data.frame(intervalos, calificacion, marcas, FAbs, FAbsCum, FRel, FRelCum)
+notas_df
+
+#Usando los scripts definidos
+TablaFrecs.L(notas, L, TRUE)
+#El otro script no es valido, ya que no tenemos la misma amplitud
+
+
+```
+

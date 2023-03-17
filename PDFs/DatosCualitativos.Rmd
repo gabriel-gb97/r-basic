@@ -1,0 +1,167 @@
+---
+title: "DatosCualitativos"
+author: "Gabriel"
+date: '2022-03-30'
+output: html_document
+---
+
+## Frecuencias absolutas, relativas y acumuladas.
+
+```{r}
+set.seed(2022)
+dados = sample(1:6, 25, replace = TRUE)
+table(dados)
+round(prop.table(table(dados)),2)
+cumsum(table(dados))
+round(cumsum(prop.table(table(dados))),2)
+set.seed(NULL)
+```
+
+### Armando DF
+
+```{r}
+dados.df = data.frame(Puntuacion = 1:6,
+                        Fr.abs = as.vector(table(dados)),
+                       Fr.rel = as.vector(prop.table(table(dados))),
+                       Fr.acu = as.vector(cumsum(table(dados))),
+                       Fr.racu = as.vector(cumsum(prop.table(table(dados))))
+                       )
+dados.df #Hacer el as.vector antes de meter al DF
+```
+
+## Medidas de centralizacion, medidas de tendencia central
+
+### Resumen todas las observaciones en un valor
+
+```{r}
+set.seed(2022)
+x = sample(1:40, 8)
+n = length(x)
+x
+set.seed(NULL)
+```
+
+
+- La primera es la media aritmetica, sumar todos los numeros del vector, y dividirlo entre la cantidad de casos
+  - funcion `mean()` $\bar{x} = \frac{1}{n}\sum_{i=1}^{n}x_{i}$
+  
+```{r}
+mean(x)
+sum(x)  / n
+```
+
+- Media Aritmetica ponderada, tolerar valores alos datos dependiendo de su relevancia en los estudios, se le atribuyen pesos a los conteos
+  - Se define un vector de pesos, con la misma longitud que el vector a tratar, varia en base a los pesos que se le dan
+  - $\bar{x}_w = \frac{\sum_{i=1}^nX_i\cdot x_i}{\sum_{i=1}^nw_i}$
+  
+```{r}
+w = c(1,2,2,3,3,2,2,1)
+sum(w*x) / sum(w)
+```
+
+- Media Geometrica, es cuando nuestos basos tiene sentido representar en forma de producto y no sumatorio
+  - $\bar{x}_G = \left(\prod_{i=1}^nx_i\right)^{1/n}$
+
+```{r}
+prod(x)^(1/n)
+```
+
+- Media armonica, es util cuando tenemos numeros con relacion a alguna unidad, ejemplo la velocidad, max luz
+  - $\bar{x}_A = \frac{n}{\sum_{i=1}^n\frac{1}{x_i}}$
+
+```{r}
+n/sum(1/x)
+```
+
+
+- Mediana, representa el valor que esta en el medio del vector ordenado de menor a mayor
+  - Si n es par, la mediana es el medio de los dos datos centrales, la primera de las racu que supera el 50%
+  - Si n es impar, es el medio exacto
+  - funcion `median()`
+- Moda, el o los valores que tienen el maximo numero de frecuencia absoluta
+  - funcion `as.numeric(names(which(table(vector)==max(table(vector)))))` asnumeric ya que al ser cuantitativas, quier que me duevuelva numero
+  
+  
+
+## Medidas de posicion
+
+Son medidas que dividen a la poblacion a tratar en determinadas porciones, la mediana es el 50%
+
+```{r}
+set.seed(260798)
+dados = sample(1:4, 40, replace = TRUE)
+set.seed(NULL)
+length(dados)
+dado = sort(dados)
+dados
+```
+
+Amrmando df con frecuencias abs, relativas y acumuladas.
+
+```{r}
+dados.df = data.frame(Puntuacion = 1:4,
+                        Fr.abs = as.vector(table(dados)),
+                       Fr.rel = as.vector(prop.table(table(dados))),
+                       Fr.acu = as.vector(cumsum(table(dados))),
+                       Fr.racu = as.vector(cumsum(prop.table(table(dados))))
+                       )
+dados.df
+```
+
+Si nos piden en este caso el $Q_{0.3}$ es el primer elemento de la lista cuya frecuenca relativa es mayor o igual a 0.3
+
+En este caso es el 2, es el $Q_{0.3}$ y el $Q_{0.5}$, ya que supera al 0.5
+
+Tambien, si tengo el vector ordenado, y quiero hallar $Q_{0.3}$, es el que este en el 30% de la muestra de 50
+
+30% de 50 es 15
+
+```{r}
+dados[15]
+```
+
+
+### Cuantiles con nombres propios por su uso, los mas usados
+
+- Cuartiles, $Q_{0.25}$, $Q_{0.5}$, $Q_{0.75}$, son llamados primer, segundo y tercer cuartil, el $Q_{0.5}$ es la mediana
+- Deciles, son cuantiles $Q_{p}$ con $p$  multiplo de 0.1
+- Percentiles, son cuantiles $Q_{p}$ con $p$ multiplo de 0.01
+
+Funcion `quantile()`
+
+```{r}
+dados2 = sample(1:6, 15, replace = TRUE)
+dados2
+quantile(dados2, 0.25) #Primer cuartil
+quantile(dados2, 0.8) #Octavo decil
+```
+
+
+## Medidas de dispersion
+
+### Mide que tan dispersos estan los datos
+
+Los mas importantes
+
+- El rango o el recorrido, la diferencia entre el maximo y el minimo de las obvservaciones
+- El rango intercuartilico, es la diferencia entre el tercer y el primer cuartil
+- La varianza, lo que se denomina $s^2$, es la media aritmetica de las diferencias al cuadrado entre los datos $x_i$ y la media de las obvservaciones
+$$s^2 = \frac{\sum_{j=1}^n(x_{j} - \bar{x})^2}{n} = \frac{\sum_{j=1}^nn_j(X_{j} - \bar{x})^2}{n} = \sum_{j=1}^kf_j(X_j-\bar{x})^2$$
+- La desviacion tipica, es la raiz cuadrada de la version positva de la varianza, para volver a sus unidades originales $s = \sqrt{s^2}$
+- Varianza tipica muestral pero dividido n-1, esta varianza intenta acercar la muestra a la poblacion en general $$\tilde{s}^{2} = \frac{n}{n-1}s^2 = \frac{\sum_{j=1}^n(x_1 - \bar{x})^2}{n-1}$$ 
+- La desviacion tipica muestral, es la raiz cuadrada de la varianza tipica muestral $\tilde{s} = \sqrt{\tilde{s}^2}$
+
+Propiedades de la varianza 
+
+- $s^2\ge 0$. Esto se debe a que, por definición, es una suma de cuadrados de números reales.
+- $s^2 = 0\Longrightarrow x_j-\bar{x}=0\ \forall j= 1,\dots,n$. En consecuencia, si $s^2=0$, entonces todos los datos son iguales.
+- $s^2 =\frac{\sum_{j=1}^nx_j^2}{n}-\bar{x}^2$. Es decir, la varianza es la media de los cuadrados de los datos menos el cuadrado de la media aritmética de estos.
+  
+
+  
+  
+  
+  
+  
+  
+  

@@ -1,0 +1,32 @@
+---
+title: "Insecticida"
+author: "Gabriel"
+date: '2022-04-05'
+output: html_document
+---
+
+## Que insecticida funciona mejor?
+
+Cargamos los datos del Dset de `R`
+```{r}
+ins = InsectSprays
+str(ins)
+head(ins)
+```
+
+
+```{r}
+by(ins$count, ins$spray, FUN = summary)
+```
+
+Desviacion tipica
+```{r}
+by(ins$count, ins$spray, FUN = sd)
+```
+
+Diagramas de caja
+```{r}
+boxplot(count~spray, data = ins, col = 'lightgreen',
+    xlab = 'Tipo de Spray', ylab= 'Insectos muertos')
+```
+

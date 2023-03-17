@@ -1,0 +1,30 @@
+---
+title: "Geometrica"
+author: "Gabriel"
+date: '2022-04-21'
+output: html_document
+---
+
+# Geometrica
+
+Numeros de intentos hasta el primer exito
+
+## Funcion de densidad
+
+Sea $X = Geom(p=0.1)$ la distribucion que modela la probabilidad de intentar abirir una puerta hasta conseguirli
+
+En `R`
+```{r}
+library(Rlab)
+p = 0.1
+plot(0:10, dgeom(0:10, p)) #Funcion de probabilidad
+plot(0:20, pgeom(0:20, p), ylim = c(0,1)) #Funcion de distribucion
+
+#Quantiles
+qgeom(0.5, p)
+qgeom(0.75, p)
+
+#Datos aleatorios
+hist(rgeom(10000, p))
+```
+

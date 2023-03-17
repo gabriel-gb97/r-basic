@@ -1,0 +1,60 @@
+---
+title: "Pokemons"
+author: "Gabriel"
+date: '2022-04-28'
+output: html_document
+---
+
+```{r setup, include=FALSE, cache=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+library(reticulate)
+use_python("/Users/gabri/anaconda3/python.exe")
+```
+
+# Pokemons (Py -> R)
+
+```{python}
+
+import pandas as pd
+pkmn = pd.read_csv("../../data/Pokemon.csv")
+
+#Limpiando los datos
+
+#Filtrando por los de 1gen
+pkmn = pkmn[pkmn['Generation']==1]
+print(pkmn.head())
+print(pkmn.shape)
+
+#Filtrando por columnas
+pkmn = pkmn[['Type 1', 'Type 2', 'Speed']]
+pkmn = pkmn.dropna()
+print(pkmn.head())
+print(pkmn.shape)
+```
+
+## Usando R con objetos limpiados mediante python
+```{r, fig.width=7, fig.height=4}
+library(reticulate)
+hist(py$pkmn[,'Speed'], breaks = 10, main = "Velocidad de los Pokemon")
+
+```
+
+#Pokemons (R -> Py)
+
+```{r}
+pkmn2 = read.csv("../../data/Pokemon.csv", header = TRUE, stringsAsFactors = TRUE)
+library(tidyverse)
+pkmn2 = pkmn2 %>%
+  filter(Generation == 1) %>%
+  select(Type.1, Type.2, Speed) %>%
+  na.omit()
+summary(pkmn2)
+```
+
+## Transmision a Py de datos limpiados mediante R
+
+```{python}
+print(r.pkmn2.head())
+
+```
+

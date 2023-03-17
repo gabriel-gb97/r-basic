@@ -1,0 +1,49 @@
+---
+title: "R & Python"
+author: "Gabriel"
+date: "26/2/2022"
+output: pdf_document
+---
+
+# Vamos a escribir en R y Python
+
+## Libreria reticulate
+
+Sirve para compartir codigo entre R y Python
+
+```{r}
+library(reticulate)
+os = import("os")
+os$listdir(".")
+#py_install("nombre del paquete a instalar")
+```
+
+
+
+```{r}
+source_python("add.py")
+add(3, 4)
+```
+
+```{r}
+np = import("numpy", convert = FALSE)
+
+x = np$array(c(1:4))
+sum = x$cumsum()
+  
+print(sum)
+py_to_r(sum)
+```
+
+
+## Ayuda
+
+```{r}
+
+py_help(os$chdir)
+```
+
+
+## Arrays
+
+a = np.array(c(1:10), dtype="float16")

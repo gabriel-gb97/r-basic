@@ -1,0 +1,41 @@
+---
+title: "DistribucionBernoulli"
+author: "Gabriel"
+date: '2022-04-21'
+output: html_document
+---
+
+##  Funcion de densidad
+
+En `R`, sea $X = Be(p=0.7)$, la distribucion que modela la probabilidad de obtener una cara usando una modela truncada
+```{r}
+library(Rlab)
+dbern(0, prob = 0.7)
+dbern(1, prob = 0.7)
+
+#Funcion de distribucion(acumulada de la densidad)
+pbern(0, prob = 0.7)
+pbern(1, prob = 0.7)
+
+#Quantiles
+qbern(0.5, prob = 0.7)
+qbern(0.25, prob = 0.7)
+
+#Numeros aleatorios, vector con probabilidaddes de acuerdo a el parametro p
+rbern(100, prob = 0.7) -> bern
+hist(bern)
+
+```
+
+En `Python`
+```{python}
+#from scipy.stats import bernoulli
+#import matplotlib.pyplot as plt
+#p = 0.7
+#mean, var, skew, kurt = bernoulli.stats(p, moments = 'mvsk') #De una distrbucion de bernoulli me genera la meda, la varianza, la skewness y la kurtosis
+#print(f"Media {mean}")
+#print(f"Varianza {var}")
+#print(f"Skewness {skew}")
+#print(f"Kurtosis {kurt}")
+```
+

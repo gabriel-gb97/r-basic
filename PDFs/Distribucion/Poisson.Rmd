@@ -1,0 +1,27 @@
+---
+title: "Poisson"
+author: "Gabriel"
+date: '2022-04-21'
+output: html_document
+---
+
+# Distribucion de Poisson
+
+Supomgamos que $X$ modela el numero de errores por pagina que tiene un valor esperado $\lambda = 5$.
+
+En `R`
+
+```{r}
+library(Rlab)
+l = 5
+dpois(x = 0:20, lambda = l) #funcion de probabilidad
+pdepois(x = 0:10, lambda = l) #Funcion de distribucion
+
+#Quantiles
+qpois(0.5, lambda = l)
+
+#Aleatorios
+hist(rpois(1000, lambda = l), breaks = 16)
+
+```
+

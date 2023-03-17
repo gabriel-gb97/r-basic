@@ -1,0 +1,41 @@
+---
+title: "Binomio de Newton"
+author: "Gabriel"
+date: "27/2/2022"
+output:
+  html_document:
+    df_print: paged
+---
+
+# Producto notable
+
+La formula es la siguiente
+
+$$(a+b)^2 = a^2+2ab+b^2$$
+
+# Funcion que calcula pn
+
+```{r}
+binomioNewton2 = function(a, b){
+  a^2+2*a*b+b^2
+}
+
+binomioNewton2(1, 2)
+binomioNewton2(2, 1)
+```
+
+# Binomio de Newton
+
+$$(a+b)^n = \sum_{k=0}^n {n\choose k}\cdot a^{n-k}\cdot b^k = {n\choose 0}\cdot a^n\cdot b^0\cdots {n\choose n}\cdot a^0\cdot b^n$$
+
+# Funcion
+
+```{r}
+binomioNewton = function(a ,b, n){
+  cumsum(choose(n,(0:n))*a^{n-(0:n)}*b^(0:n))[n+1]
+}
+binomioNewton(2,1,2)
+binomioNewton(3,4,14)
+```
+
+

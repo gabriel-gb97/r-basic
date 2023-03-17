@@ -1,0 +1,67 @@
+---
+title: "Texto"
+author: "Gabriel"
+date: "26/2/2022"
+output:
+  html_document:
+    df_print: paged
+---
+
+# Tìtulo 1
+
+## Titulo 2
+
+#### Titulo 3
+
+Esto es un texto llano. Podemos escribir sin nigun problema todo el texto que queramos en còdigo `R` como formulas en LATEX
+
+Esto serìa una nueva linea de texto.Para separa parrafos se necesita siempre al menos un doble intro
+
+Para colocar cursiva podemos usar un asterisco *esto sería un texto en cursiva* o bien usar una barra baja _esto es cursiva_
+
+Para negrita, doble asterisco o doble barra baja **negrita** __negrita__
+
+Superindices con el *sombrerito* ^: nota^2^.
+ 
+Para poner links [Udemy](https://udemy.com)
+
+endash: --
+
+emdash: ---
+
+elipsis: ...
+
+ecuaciones en linea $S = \pi\cdot r^2$
+
+imagen: `![](ruta)`
+
+***
+
+Se empieza otra cosa
+
+> Esto es una cita en bloque
+
+### Listas no ordenadas
+ 
+* Item primero
+* Item segundo
+    + Sub item
+* Item tercero
+
+### Listas ordenadas
+
+1. Primer item
+2. Segundo item
+    + Sub item
+3. Tercer item
+1. Cuarto item
+1. Quinto item
+
+
+### Tablas
+
+Alumno    |   Nota    |   Edad
+----------|-----------|----------
+Gabriel   |   10      |   24
+Ricardo   |   5       |   55
+Juan      |   7       |   30

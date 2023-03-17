@@ -1,0 +1,94 @@
+---
+title: "RegresionLineal"
+author: "Gabriel"
+date: '2022-04-19'
+output: html_document
+---
+
+## Ejemplo 1
+
+```{r}
+#Importamos el dataset
+body = read.table("../data/bodyfat.txt", header = TRUE)
+head(body)
+
+#Mi y es la variable dependiente, la que quiero estimar Peso, y la x la independiente
+#Seleccionamos las variables con las que vamos a trabajar
+body2 = body[,c(2,4)]
+names(body2) = c("Grasa", "Peso")
+str(body2)
+
+#El objetivo es intentar estimar el peso como una funcion lineal de la grasa
+#En principio lo mejor es realizar un analisis exploratorio de los datos con los principales estadisticos
+plot(body2)
+
+#Calculando la recta de regresion lm(y~x) la ~ es "en funcion de"
+lm(body2$Peso ~ body2$Grasa) #Opcion 1
+lm(Peso ~ Grasa, data = body2) #Opcion 2, mas comodo de usar
+#Nos devuelve el modelo y los coeficientes, y = ax + b (a = Grasa b = intercept)
+
+#Al plot de lectura le podemos agregar con un abline() la recta de regresion
+plot(body2)
+abline(lm(Peso ~ Grasa, data = body2), col = 'purple')
+
+
+```
+
+## Demostracion
+
+Hemos pintado la recta, dando por entendido que es consistente una relacion lineal, pero no lo demostramos
+
+El coeficiente de determinacion nos es util para evaluar si la relacion lineal es significativa o no, mayor a 0.9 es un ajuste bueno. Esto se hace aplicando el summary al lm()
+
+```{r}
+summary(lm(Grasa ~ Peso, data = body2))$r.squared
+#Vemos que esta muy lejos del 0.9, por ende los datos no tienen una relacion lineal, la relacion entre el Peso y la Grasa no es lineal
+```
+
+## Transformaciones
+
+No siempre va a haber dependencias lineales, a veces puede haber relaciones potenciales y exponenciales de los datos, esto se puede llevar a cabo mediante un cambio de escala, a logaritmica, semilogaritmica.
+
+### Ejemplo 2, transformaciones exponencial
+
+```{r}
+dep = c(1.2,3.6,12,36)
+ind = c(20,35,61,82)
+
+plot(ind, dep, main = "Escala lineal")
+plot(ind, dep, log = 'y', main = 'Escala semilogaritmica')
+#Con esto vemos que hay cierta relacion lineal con la variable y en escala logaritmica
+
+#Pasamos a calcular el modelo de regresion lineal del log10(y)
+lm(log10(dep)~ind)
+summary(lm(log10(dep)~ind))$r.squared
+#Con esto podemos considerar que en efecto tenemos una relacion exponencial entre las variables
+#Haciendo despejes, llegamos a que la recta de regresion exponencial es 1.054^x * 0.468
+plot(ind, dep, main = "Curva de regresion")
+curve(1.054^x * 0.468, add = TRUE, col = 'purple')
+```
+
+### Ejemplo 3, transformacion potencial
+```{r}
+tiempo = 1:10
+gramos = c(0.097,0.709,2.698,6.928,15.242,29.944,52.902,83.903,120.612,161.711)
+df = data.frame(tiempo, gramos)
+
+#Graficamos para ver relaciones lineales, y ver en escalas logaritmicas
+plot(df)
+plot(df, log = 'y')
+plot(df, log = 'xy')
+#Vemos que con escala doble logaritmica, existe una relacion lineal, por lo tanto las variables tienen una relacion potencial
+
+#Procedemos a calcular el modelo de regresion lineal con los logaritmos en ambas variables
+lm(log10(gramos)~log10(tiempo))
+summary(lm(log10(gramos)~log10(tiempo)))$r.squared
+
+#Despejamos la funcion log(gramos) = 3.298*log(tiempo) - 1.093 -> gramos = 10^(3.298*log(tiempo))*10^-1.093 = tiempo^3.298*0.091
+#Concluimos que tiene una relacion potencial
+plot(df, main = 'Curva de regresion')
+curve(x^(3.298)*0.081, add = TRUE, col = 'purple')
+```
+
+
+

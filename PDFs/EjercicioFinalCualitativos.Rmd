@@ -1,0 +1,96 @@
+---
+title: "Ejemplo Final"
+author: "Gabriel"
+date: '2022-03-22'
+output: html_document
+---
+
+# Paso numero 1
+
+## Primero que nada le vamos a sacar una dimension a HairEyeColor
+### Juntar color de ojos y pelo sin distinguir por sexo
+
+```{r}
+male <- HairEyeColor[, , "Male"]
+female <- HairEyeColor[, , "Female"]
+
+data <- as.table(male+female) # De esta forma se logra toda la tabla de datos, sin distinguir por sexo
+data
+
+```
+
+### Manipulacion de datos
+```{r}
+dimnames(data) = list(
+  Pelo = c("Negro", "Marron", "Rojo", "Rubio"),
+  Ojos = c("Marrones", "Azules", "Pardos", "Verdes") #Modificar los nombres de las dimensiones del dataset
+)
+data
+```
+
+### Diagrama de mosaico
+```{r}
+mosaicplot(data, main = "Diagrama de mosaico de la tabla bidimensional de frecuencias
+     de colores de cabellos y ojos", col = c("lightblue")) #En este caso no se hace table, ya que viene en tabla la dataframe
+```
+
+### Cantidad de individuos
+
+```{r}
+n = sum(data)
+```
+La cantidad de individuos es `r n`
+
+### Tablas de frecuencias absolutas y relativas para cada variable
+
+```{r}
+colSums(data) #Ya que pelos y ojos estan en filas y columnas respectivamente
+rowSums(data)
+prop.table(colSums(data))
+prop.table(rowSums(data))
+```
+
+### Graficando en bar plots frecuencias relativas para pelo y ojos
+
+```{r}
+par(mfrow = c(1,2))
+barplot(prop.table(colSums(data)), main = "Frecuencias relativas\n de colores de ojos", col = c("brown", "lightblue", "chocolate2", "green"),
+        ylim = c(0.00, 0.4))
+
+barplot(prop.table(rowSums(data)), main = "Frecuencias relativas\n de colores de pelo", col = c("black", "brown", "red", "yellow"),
+        ylim = c(0.00, 0.5))
+par(mfrow = c(1,1))
+```
+
+### Frecuencias relativas globales
+
+```{r}
+round(prop.table(data), 3)
+```
+
+#### Marginal x, filas, Pelo
+
+```{r}
+round(prop.table(data, margin = 1), 3)
+```
+
+#### Marginal y, columnas, Ojos
+
+```{r}
+round(prop.table(data, margin = 2), 3)
+```
+
+### Grafico de frecuencias relativas marginales
+
+```{r}
+
+barplot(round(prop.table(data, margin = 1), 3), col = c("black", "brown", "red", "yellow"), 
+        main = "Frecuencias relativas marginal de colores\n de pelo en color de ojos", 
+        beside = TRUE, legend.text = TRUE, ylim = c(0, 0.8))#Beside, deja una barra al lado de la otra, legend.text, habilita legenda
+
+barplot(round(t(prop.table(data, margin = 2)), 3), col = c("brown", "lightblue", "chocolate2", "lightgreen"), 
+        main = "Frecuencias relativas marginal de colores\n de ojos en color de pelo", 
+        beside = TRUE, legend.text = TRUE, ylim = c(0, 0.8))
+
+```
+

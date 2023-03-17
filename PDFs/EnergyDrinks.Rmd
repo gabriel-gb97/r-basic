@@ -1,0 +1,20 @@
+---
+title: "EnergyDrink"
+author: "Gabriel"
+date: '2022-03-22'
+output: html_document
+---
+
+
+```{r}
+be = read.table("../data/EnergyDrink", header = TRUE, stringsAsFactors = TRUE)
+str(be)
+head(be, 4)
+summary(be) #Resumen de tablas de frecuencia variable, tienen que ser factores
+apply(be, MARGIN = 2, FUN = table)
+table(be$sexo)
+table(be)
+table(be[c(1,3)])
+
+```
+

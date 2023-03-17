@@ -1,0 +1,50 @@
+---
+title: "EjerciciosGraf_1"
+author: "Gabriel"
+date: "9/3/2022"
+output: html_document
+---
+
+## 1
+
+```{r}
+#curve(x^2 -3*x +30, -15, 15, add = TRUE, xlab = expression(x),
+      #ylab = expression(x^2 -3*x +30), main = "Una parabola")
+```
+
+```{r}
+f = function(x){ x ^ 2 - 3 * x + 30}
+I = c(-15:15)
+plot(f(I), type = "l",  main = "Una parabola", 
+      xlab = expression(x), ylab = expression(y = x ^ 2 - 3 * x + 30))
+```
+
+```{r}
+f = function(x){ x ^ 2 - 3 * x + 30}
+n = c(-15:15)
+plot(n, f(n), type = "line",  main = "Una parabola", 
+      xlab = expression(x), ylab = expression(y = x ^ 2 - 3 * x + 30))
+```
+
+```{r}
+curve(5 * 2 ^ x, -1, 25, log = "y", ylab = expression(y = 5 %.% 2 ^ x))
+```
+
+```{r}
+curve(3*x, -10, 20, col = "blue", 
+      main = "2 rectas", sub = "Dos rectas con pendiente paralela",
+      xlab = "", ylab = "",
+      )
+curve(-3*x, -10, 20, col = "green", add = TRUE, lty = 2)
+legend(13,10, legend = c("3x", "-3x"), col = c("blue", "green"), lty = c(1,2))
+abline(h = 0, col = "red", lwd = 5)
+```
+
+```{r}
+f = function(x){ x ^ 2 - 3 * x + 30}
+n = c(-15:15)
+plot(n, f(n), type = "l",  main = "Una parabola", 
+      xlab = expression(x), ylab = expression(y = x ^ 2 - 3 * x + 30))
+abline(h = 0, col = "red", lwd = 5)
+```
+

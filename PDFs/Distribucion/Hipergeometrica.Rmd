@@ -1,0 +1,32 @@
+---
+title: "Hipergeometrica"
+author: "Gabriel"
+date: '2022-04-21'
+output: html_document
+---
+
+# Hipergeometrica
+
+## Funcion de densidad
+
+Supongamos que tenemos 20 animales de los cuales 7 son perros y el resto no lo son. Queremos medir la probabilidad encontrar determinado numero de perros si elegimos $n = 12$ animales al azar
+
+En `R`
+
+```{r}
+library(Rlab)
+M = 7
+N = 13
+n = 12
+
+plot(x = 0:12, dhyper(x = 0:12, m = M, n = N, k = n)) #Funcion de probabilidad
+plot(x = 0:12, phyper(q = 0:12, m = M, n = N, k = n)) #Funcion de distribucion
+
+#Quantiles
+qhyper(0.5, m = M, n = N, k = n)
+
+#Aleatorios
+hist(rhyper(nn = 1000, m = M, n = N, k = n), breaks = 8)
+
+```
+

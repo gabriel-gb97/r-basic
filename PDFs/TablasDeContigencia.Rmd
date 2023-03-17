@@ -1,0 +1,76 @@
+---
+title: "Tablas de contigencia"
+author: "Gabriel"
+date: '2022-03-18'
+output: html_document
+---
+ 
+# Tablas de contigencia
+
+```{r}
+datos = factor(c("H", "M", "M", "M", "H", "H", "M", "M"))
+table(datos)
+table(datos)["M"]
+sum(table(datos))
+```
+
+## Tablas de contigencia realativa
+
+Funcion prop.table() a la table() de los datos, siempre usarlo de esta manera
+
+Tambien se puede calcular a mano `table(x)/length(x)`
+
+Nos da las proporciones de los datos en base a su total
+
+Hallar la  moda, `names(which(table(x)==max(table(x))))`
+
+$$f_i = \frac{n_i}{n}$$
+
+```{r}
+100*prop.table(table(datos))
+table(datos)/length(datos)
+names(which(table(datos)==3))
+
+moda <- function(x){
+  names(which(table(x)==max(table(x))))
+}
+m_t = moda(datos)
+```
+
+La moda del data frame es: `r m_t`
+
+## Tablas de frecuencias bidemensionales
+
+Para obtenerlas 
+- `prop.table(table(d, d1), margin = 1)` por filas
+- `prop.table(table(d, d1), margin = 2)` por columnas
+
+
+## Paquete gmodels
+
+Permite hacer una tabla de todas las frecuencias relativas bidemensionales
+Estas tablas nos permiten entender si las respuestas de si o no estan basadas en genero, entender correlatividades
+
+```{r}
+library(gmodels)
+sex = factor(c("H", "M", "M", "M", "H", "H", "M", "M"))
+ans = factor(sample(c("SI", "NO"), length(sex), replace = TRUE))
+CrossTable(sex, ans, prop.chisq = FALSE)
+```
+
+### Sumas por filas y columnas
+
+```{r}
+tt <- table(sex, ans)
+tt
+prop.table(tt)#Global
+prop.table(tt, margin = 1) #Por sexo, filas
+prop.table(tt, margin = 2) #Por respuesta, columnas
+
+colSums(tt)
+rowSums(tt)
+colSums(prop.table(tt))
+rowSums(prop.table(tt))
+
+apply(tt, FUN = sqrt, MARGIN = c(1,2))
+```

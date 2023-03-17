@@ -1,0 +1,124 @@
+---
+title: "MedidasDispersion"
+author: "Gabriel"
+date: '2022-04-01'
+output: html_document
+---
+
+
+- Valores minimo y maximo `range(x)`
+- Rango `diff(range(x))`
+- Rango Intercuartilico `IQR(x, type = ...)`
+- Varianza muestral `var(x)`
+- Desviacion tipica muestral `sd(x)`
+- Varianza `var(x)*(length(x)-1)/length(x)`
+- Desviacion tipica `sd(x)*(length(x)-1)/length(x)`
+
+
+
+```{r}
+set.seed(2022)
+dados = sample(1:6, 20, replace = TRUE)
+dados
+set.seed(NULL)
+```
+
+```{r}
+range(dados)
+diff(range(dados))
+IQR(dados)
+var(dados)
+sd(dados)
+var(dados)*(length(dados)-1)/length(dados)
+sd(dados)*(length(dados)-1)/length(dados)
+```
+
+### Funcion summary()
+
+Devuelve valores estadisticos varios del vector a tratar, en un dataframe, muestra los estadisticos para cada variable 
+
+```{r}
+summary(dados)
+```
+
+
+### Funcion by()
+
+Aplica una funcion a algunas columnas del df, segun niveles de un factor
+
+```{r}
+by(iris[,c(1,3)], iris$Species, FUN = summary)
+```
+
+### Funcion aggregate()
+
+Se usa muy similar a la funcion by, no obstante los resultados son distintos
+
+```{r}
+aggregate(cbind(Sepal.Length, Petal.Length)~Species, data = iris, FUN = summary) #Column bind, dame dos columnas y agrupa por
+```
+
+### Algo que siempre considerar
+
+Descartar los NA, esto no permite usar ninguna de las funciones anteriores, considerar siempre `na.rm = TRUE`
+
+## Boxplot
+
+Remarca 5 valores estadisticos, mediana, rango intercuartilico, maximos y minimos, y outliers si hay maximos mayores a 1.5 del rango intercuartilico, marcan el minmo y el maximo a no ser que haya valores muy alejados, estos quedan en los outliers
+
+```{r}
+boxplot(dados, main = "Diagrama de caja")
+```
+
+### Boxplot para todo un dataframe
+
+No es lo recomendable, dado que no todas las variab2les entran dentro del mismo rango de valores
+
+```{r}
+body = read.table("../data/bodyfat.txt", header = TRUE)
+boxplot(body)
+```
+
+Por eso se recurre a usar las variables que manejen rangos similares para poder usar el boxplot
+
+```{r}
+boxplot(body[,c(7,8,9)], names = c("Pecho", "Abdomen", "Cadera"))
+```
+
+El objetivo es para comparar variables visualmente, cuando tienen relacion en si, una variable y un factor, agrupando por sus niveles la variable, esto me da distintos boxplots, comparables entre si, es una manera mucho mas facil de comparar
+
+```{r}
+boxplot(circumference~Tree, data = Orange, ylab = "Circunferencia del tronco (mm)",
+        main = "Boxplot de los naranjos en funcion del tipo de arbol")
+```
+
+```{r}
+boxplot(Sepal.Length~Species, data = iris)
+```
+
+```{r}
+data = read.table("../data/datacrab.txt", header = TRUE)
+boxplot(weight~color, data = data)
+```
+
+### Parametro notch
+
+Hace una muesca en las mediana de las cajas, si las medianas no se solapan, se concluye que las poblaciones son diferentes con alto grado de confianza 
+
+```{r}
+boxplot(Sepal.Length~Species, data = iris, notch = TRUE)
+```
+
+Podemos calcular mas medidas y agregarlas mediante points al grafico
+
+### Estructuras de los boxplots
+
+Generan una estrucutra interna muy rica de informacion
+
+- stats, los valores que utilizan, niveles, cuartiles
+- out, nos devuelve los outliers que tiene la box, combinar con group, que es a donde corresponde el outlier
+
+```{r}
+str(boxplot(weight~color, data = data))
+```
+

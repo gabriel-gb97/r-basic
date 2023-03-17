@@ -1,0 +1,60 @@
+---
+title: "DatosOrdinales"
+author: "Gabriel"
+date: '2022-03-24'
+output: html_document
+---
+
+```{r}
+set.seed(2018)
+clientes = sample(1:5, 50, replace = TRUE)
+clientes
+library(gmodels)
+CrossTable(clientes)
+```
+
+#### Usar cumsum para tener las ferecuencias acumuladas, tanto absolutas como prop
+
+```{r}
+long = sample(1:5, 100, replace = TRUE)
+long = ordered(long)
+levels(long) = c('muycorto', 'corto' , 'normal' , 'largo', 'muylargo')
+long
+```
+#### Frecuencias absolutas, relativas, acumuladas
+
+```{r}
+table(long)
+prop.table(table(long))
+cumsum(table(long))
+cumsum(prop.table(table(long)))
+barplot(cumsum(prop.table(table(long))), main = "Diagrama de frecuencias relativas acumuladas")
+```
+
+#### Bidimensionalidad con tablas relativas acumuladas
+
+```{r}
+set.seed(2018)
+zonas = rep(c('A', 'B', 'C', 'D'), c(30, 25, 35, 10))
+j = data.frame(factor(zonas), long)
+str(j)
+head(j)
+table(j)
+apply(table(j), MARGIN = 1, FUN = cumsum)#Para calcular la suma acumulada en una bidimension, funcion apply margin = 1 para que lo haga por filas, es necesario hacer traspuesta para que quede con el formato correcto
+t(apply(table(j), MARGIN = 1, FUN = cumsum))
+t(apply(prop.table(table(j), margin = 1), MARGIN = 1, FUN = cumsum))
+
+#Quiero que la grafica queden agrupadas las barras por zonas, por lo tanto A,B,C,D tiene que estar en las columnas
+#Para que esto se de, uso la prop como me la da R, sin trasponer
+barplot(apply(prop.table(table(j), margin = 1), MARGIN = 1, FUN = cumsum), beside = TRUE, legend.text = TRUE,
+        main = "Diagrama de barras para frecuencias relativas acumuladas por zona",
+        args.legend = list(x = 'topleft', cex = 0.55)) #Llevo la legenda al borde superior de Y, y le reduzco el tamano al 55%
+
+
+set.seed(NULL)
+```
+
+
+
+
+

@@ -1,0 +1,30 @@
+---
+title: "Binomial"
+author: "Gabriel"
+date: '2022-04-21'
+output: html_document
+---
+
+# Distribucion Binomial
+
+## Funcion de densidad
+
+Sea $X = B(n = 30, p = 0.6)$,
+
+En `R`
+```{r}
+library(Rlab)
+n = 30
+p = 0.6
+plot(0:30,dbinom(0:30, size = n, prob = p)) #Funcion densidad
+plot(0:n, pbinom(0:n, size = n, prob = p)) #Funcion distribucion
+qbinom(0.5, size = n, prob = p)
+qbinom(0.25, n, p)
+
+#Version discreta de la funcion densidad
+hist(rbinom(100000, n, p), breaks = 0:30) #De repetir el experimento x veces, de hacer n tiradas con probabilidad p de exito
+```
+## En Python
+
+`
+`
